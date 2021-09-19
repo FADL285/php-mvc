@@ -2,13 +2,14 @@
 
 namespace PhpMvc\Http;
 
+use PhpMvc\View\View;
+
 class Route {
 
     public static array $routes = [];
 
     public function __construct(protected Request $request, protected Response $response)
     {
-
     }
 
     public static function get($route, callable|array $action)
@@ -27,11 +28,10 @@ class Route {
         $method = $this->request->method();
         $action = self::$routes[$method][$path] ?? false;
 
-        if (!$action) {
-            return;
+        // 404
+        if (!array_key_exists($path, self::$routes[$method])) {
+            View::makeError('404');
         }
-
-        // 404 handling
 
         // callback
         if (is_callable($action)) {
