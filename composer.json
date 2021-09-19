@@ -1,0 +1,19 @@
+{
+    "name": "fadl/php-mvc",
+    "autoload": {
+        "psr-4": {
+            "PhpMvc\\": "src",
+            "App\\": "App"
+        }
+    },
+    "authors": [
+        {
+            "name": "Mohamed Fadl",
+            "email": "mohamed.fadl2852@gmail.com"
+        }
+    ],
+    "require": {
+        "vlucas/phpdotenv": "^5.3",
+        "symfony/var-dumper": "^5.3"
+    }
+}
