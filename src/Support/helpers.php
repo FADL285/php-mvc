@@ -1,11 +1,23 @@
 <?php
 
+use PhpMvc\Application;
 use PhpMvc\View\View;
 
 if (!function_exists('env')) {
     function env($key, $default = null)
     {
         return $_ENV[$key] ?? value($default);
+    }
+}
+
+if (!function_exists('app')) {
+    function app(): ?Application
+    {
+        static $instance = null;
+        if (!$instance) {
+            $instance = new Application;
+        }
+        return $instance;
     }
 }
 
