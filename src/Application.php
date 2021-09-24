@@ -11,22 +11,20 @@ use JetBrains\PhpStorm\Pure;
 use PhpMvc\Http\Request;
 use PhpMvc\Http\Response;
 use PhpMvc\Http\Route;
+use PhpMvc\Support\Config;
 
 class Application {
     protected Route $route;
     protected Request $request;
     protected Response $response;
+    protected Config $config;
 
-    #[Pure] public function __construct()
+    public function __construct()
     {
         $this->request = new  Request();
         $this->response = new  Response();
         $this->route = new Route($this->request, $this->response);
-    }
-
-    public function run()
-    {
-        $this->route->resolve();
+        $this->config = new Config($this->loadConfigurations());
     }
 
     public function __get(string $name)
@@ -34,5 +32,23 @@ class Application {
         if (property_exists($this,$name)) {
             return $this->$name;
         }
+        return null;
     }
+
+    public function run()
+    {
+        $this->route->resolve();
+    }
+
+    private function loadConfigurations(): \Generator
+    {
+        foreach (scandir(base_path('config/')) as $file) {
+            if ($file === '.' || $file === '..') {
+                continue;
+            }
+
+            yield explode('.', $file)[0] => require base_path('config/') . $file;
+        }
+    }
+
 }

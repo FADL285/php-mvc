@@ -40,3 +40,18 @@ if (!function_exists('view')) {
         View::make($view, $params);
     }
 }
+
+if (!function_exists('config')) {
+    function config($key = null, $default = null) {
+        if (is_null($key)) {
+            return app()->config;
+        }
+
+        if (is_array($key)) {
+            app()->config->set($key);
+            return app()->config;
+        }
+
+        return app()->config->get($key, $default);
+    }
+}
